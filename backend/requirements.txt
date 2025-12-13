@@ -7,3 +7,4 @@ sqlalchemy==2.0.45
 requests==2.32.3
 pytest==8.3.3
 pytest-mock==3.14.0
+rapidfuzz==3.10.1
