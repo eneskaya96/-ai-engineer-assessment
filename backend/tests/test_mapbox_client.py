@@ -8,8 +8,10 @@ class TestMapboxClient:
 
     def test_client_initialization(self, mapbox_client):
         """Test that client initializes with token."""
+        from mapbox_client import DEFAULT_MAPBOX_BASE_URL
+
         assert mapbox_client.token is not None
-        assert mapbox_client.base_url == "https://api.mapbox.com/search/geocode/v6/forward"
+        assert mapbox_client.base_url == DEFAULT_MAPBOX_BASE_URL
 
     def test_geocode_empty_query(self, mapbox_client):
         """Test that empty queries return None."""

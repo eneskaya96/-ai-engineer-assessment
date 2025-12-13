@@ -12,14 +12,16 @@ from models import MapboxResponse
 load_dotenv()
 
 
+DEFAULT_MAPBOX_BASE_URL = "https://api.mapbox.com/search/geocode/v6/forward"
+
+
 class MapboxClient:
-    def __init__(self, token: str | None = None) -> None:
+    def __init__(self, token: str | None = None, base_url: str | None = None) -> None:
         self.token = token or os.getenv("MAPBOX_ACCESS_TOKEN")
+        self.base_url = base_url or os.getenv("MAPBOX_BASE_URL", DEFAULT_MAPBOX_BASE_URL)
 
         if not self.token:
             raise Exception("MAPBOX_ACCESS_TOKEN must be set")
-
-        self.base_url = "https://api.mapbox.com/search/geocode/v6/forward"
 
     def geocode_best_match(self, query: str) -> Optional[str]:
         """
