@@ -1,4 +1,5 @@
 from typing import List, Optional
+
 from pydantic import BaseModel
 
 
@@ -11,6 +12,7 @@ class Address(BaseModel):
 
 class AddressCreate(BaseModel):
     address: str
+
 
 class AddressUpdate(BaseModel):
     address: str
