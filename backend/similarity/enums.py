@@ -12,6 +12,7 @@ class SimilarityMethod(str, Enum):
     TOKEN_BASED = "token_based"
     PHONETIC = "phonetic"
     FUZZY = "fuzzy"
+    GEMINI = "gemini"
 
     @property
     def display_name(self) -> str:
@@ -23,5 +24,6 @@ class SimilarityMethod(str, Enum):
             self.TOKEN_BASED: "Token-Based (Jaccard)",
             self.PHONETIC: "Phonetic (Soundex)",
             self.FUZZY: "RapidFuzz Combined",
+            self.GEMINI: "Gemini (LLM)",
         }
         return names.get(self, self.value)
