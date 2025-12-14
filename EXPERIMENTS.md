@@ -101,6 +101,34 @@ Based on the benchmark results, **Jaro-Winkler** was selected as the default met
 4. **No external dependencies**: Pure Python implementation
 5. **Prefix bonus**: Particularly effective for addresses that often share common prefixes (street names, city names)
 
+## Mapbox API Integration
+
+### Best Match Selection Strategy
+
+The Mapbox Geocoding API can return multiple results for a single query. Our current approach:
+
+- Use `limit: 1` to get only the top result
+- Mapbox returns results sorted by relevance, so first result is typically the best match
+
+**Alternative approaches considered**:
+
+1. **Multi-result scoring**: Fetch top 5 results, score each with similarity, select highest
+2. **Feature type filtering**: Prioritize by type (address > place > poi)
+3. **Relevance threshold**: Only accept results above a confidence score
+
+### API Parameters for Better Results
+
+The Mapbox Forward Geocoding API supports optional parameters that could improve match quality:
+
+| Parameter | Description | Potential Use |
+|-----------|-------------|---------------|
+| `language` | Response language (e.g., "en", "nl", "de") | Match input language for better similarity scores |
+| `country` | Limit to specific countries (ISO 3166-1 alpha-2) | Reduce false matches across countries |
+| `types` | Filter by feature type (address, place, postcode) | Focus on specific granularity |
+| `proximity` | Bias results near coordinates | Useful if user location is known |
+
+**Future enhancement**: Detect input language and pass it to Mapbox. This would return results in the same language, improving similarity scores (e.g., "Parijs, Frankrijk" with `language=nl` returns Dutch names).
+
 ## Future Improvements
 
 ### Pre-processing
