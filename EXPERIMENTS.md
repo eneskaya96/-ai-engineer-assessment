@@ -52,6 +52,13 @@ Given two addresses (original input and Mapbox geocoded result), we need to scor
 - **Pros**: Best of multiple approaches, handles various edge cases
 - **Cons**: Heavier dependency, slightly slower
 
+### 7. Gemini (LLM)
+
+- **Description**: Uses Google Gemini API to semantically compare two addresses via prompt
+- **Pros**: Semantic understanding, handles language differences, can interpret context
+- **Cons**: Slow (~716ms/request), expensive (requires paid API), inconsistent outputs, rate limited
+- **Implementation**: Sends both addresses with scoring guide prompt, parses numeric response
+
 ## Benchmark Results
 
 Run the benchmark script to generate results:
@@ -63,12 +70,13 @@ python tests/test_similarity_benchmark.py
 
 | Method | MAE | MSE | Correlation | Total Time (ms) | Avg Time (ms) |
 |--------|-----|-----|-------------|-----------------|---------------|
-| **Jaro-Winkler** | **0.1387** | 0.0310 | **0.5218** | 15.86 | 0.0317 |
-| RapidFuzz Combined | 0.1656 | 0.0437 | 0.4647 | 5.65 | 0.0113 |
-| Baseline (SequenceMatcher) | 0.2085 | 0.0741 | 0.4654 | 14.45 | 0.0289 |
-| Token-Based (Jaccard) | 0.2496 | 0.0797 | 0.5119 | 17.75 | 0.0355 |
-| Phonetic (Soundex) | 0.2599 | 0.0980 | 0.4779 | 6.88 | 0.0138 |
-| Levenshtein Distance | 0.2945 | 0.1168 | 0.4799 | 139.38 | 0.2788 |
+| **Jaro-Winkler** | **0.1387** | 0.0310 | **0.5218** | 56.78 | 0.1136 |
+| RapidFuzz Combined | 0.1656 | 0.0437 | 0.4647 | 16.93 | 0.0339 |
+| Baseline (SequenceMatcher) | 0.2085 | 0.0741 | 0.4654 | 79.51 | 0.1590 |
+| Token-Based (Jaccard) | 0.2496 | 0.0797 | 0.5119 | 80.96 | 0.1619 |
+| Phonetic (Soundex) | 0.2599 | 0.0980 | 0.4779 | 41.28 | 0.0826 |
+| Levenshtein Distance | 0.2945 | 0.1168 | 0.4799 | 418.47 | 0.8369 |
+| Gemini (LLM) | 0.3924 | 0.1696 | 0.2283 | 358064.79 | 716.1296 |
 
 **Metrics Explanation:**
 - **MAE (Mean Absolute Error)**: Average absolute difference from ground truth. Lower is better.
@@ -90,6 +98,33 @@ python tests/test_similarity_benchmark.py
 3. **Character-level methods** (Baseline, Levenshtein) struggle with:
    - Completely different word orders
    - Extra/missing address components
+
+### LLM-Based Approach (Gemini)
+
+We also tested Google Gemini as an LLM-based similarity method. The results were surprising:
+
+- **Worst MAE (0.3924)**: Higher error than all traditional methods
+- **Lowest Correlation (0.2283)**: Poor ranking accuracy
+- **Extremely slow**: ~716ms per comparison vs ~0.1ms for Jaro-Winkler
+
+**Why LLM performed poorly:**
+
+1. **Inconsistent scoring**: LLMs don't produce deterministic outputs, leading to variable scores
+2. **Different interpretation of "similarity"**: The ground truth measures geographic proximity, while LLM may interpret semantic similarity differently
+3. **Prompt sensitivity**: Results highly depend on prompt engineering
+4. **Overkill for structured data**: Addresses have predictable patterns that simpler algorithms handle well
+
+**Practical limitations:**
+
+- **Cost**: Free tier quota is very limited, production use requires paid API access
+- **Rate limiting**: Many requests hit 429 errors during benchmark, causing fallback scores
+- **Latency**: ~716ms per request is not acceptable for real-time applications
+
+**When LLM might help:**
+
+- Pre-processing: Normalizing/cleaning addresses before comparison
+- Edge cases: Handling very messy or incomplete data
+- Language translation: Converting addresses to a common language first
 
 ### Selected Approach
 
@@ -177,7 +212,8 @@ backend/
 │       ├── jaro_winkler.py  # Jaro-Winkler
 │       ├── token_based.py   # Jaccard similarity
 │       ├── phonetic.py      # Soundex encoding
-│       └── fuzzy.py         # RapidFuzz combined
+│       ├── fuzzy.py         # RapidFuzz combined
+│       └── gemini.py        # Google Gemini LLM
 ├── similarity.py            # Main entry point
 └── tests/
     └── test_similarity_benchmark.py
