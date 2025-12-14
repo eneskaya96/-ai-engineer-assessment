@@ -14,6 +14,7 @@ from similarity.methods import (
     TokenBasedSimilarity,
     PhoneticSimilarity,
     FuzzySimilarity,
+    GeminiSimilarity,
 )
 
 # Default method to use (Jaro-Winkler has best MAE: 0.1387)
@@ -86,4 +87,5 @@ __all__ = [
     "TokenBasedSimilarity",
     "PhoneticSimilarity",
     "FuzzySimilarity",
+    "GeminiSimilarity",
 ]

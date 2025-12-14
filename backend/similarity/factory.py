@@ -11,6 +11,7 @@ from similarity.methods import (
     TokenBasedSimilarity,
     PhoneticSimilarity,
     FuzzySimilarity,
+    GeminiSimilarity,
 )
 
 
@@ -22,6 +23,7 @@ _METHOD_REGISTRY: Dict[SimilarityMethod, Type[BaseSimilarity]] = {
     SimilarityMethod.TOKEN_BASED: TokenBasedSimilarity,
     SimilarityMethod.PHONETIC: PhoneticSimilarity,
     SimilarityMethod.FUZZY: FuzzySimilarity,
+    SimilarityMethod.GEMINI: GeminiSimilarity,
 }
 
 

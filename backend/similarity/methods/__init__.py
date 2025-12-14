@@ -6,6 +6,7 @@ from .jaro_winkler import JaroWinklerSimilarity
 from .token_based import TokenBasedSimilarity
 from .phonetic import PhoneticSimilarity
 from .fuzzy import FuzzySimilarity
+from .gemini import GeminiSimilarity
 
 __all__ = [
     "BaselineSimilarity",
@@ -14,4 +15,5 @@ __all__ = [
     "TokenBasedSimilarity",
     "PhoneticSimilarity",
     "FuzzySimilarity",
+    "GeminiSimilarity",
 ]
