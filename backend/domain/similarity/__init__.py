@@ -1,13 +1,13 @@
 """Similarity module for address matching."""
 
-from similarity.base import BaseSimilarity
-from similarity.enums import SimilarityMethod
-from similarity.factory import (
+from .base import BaseSimilarity
+from .enums import SimilarityMethod
+from .factory import (
     get_similarity_method,
     get_all_methods,
     list_available_methods,
 )
-from similarity.methods import (
+from .methods import (
     BaselineSimilarity,
     LevenshteinSimilarity,
     JaroWinklerSimilarity,

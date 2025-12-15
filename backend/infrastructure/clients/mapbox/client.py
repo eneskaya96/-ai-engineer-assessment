@@ -1,24 +1,22 @@
+"""Mapbox Geocoding API client."""
+
 from __future__ import annotations
 
-import os
 from typing import Optional
 
 import requests
-from dotenv import load_dotenv
 from pydantic import ValidationError
 
-from models import MapboxResponse
-
-load_dotenv()
-
-
-DEFAULT_MAPBOX_BASE_URL = "https://api.mapbox.com/search/geocode/v6/forward"
+from config import settings
+from .models import MapboxResponse
 
 
 class MapboxClient:
+    """Client for Mapbox Geocoding API."""
+
     def __init__(self, token: str | None = None, base_url: str | None = None) -> None:
-        self.token = token or os.getenv("MAPBOX_ACCESS_TOKEN")
-        self.base_url = base_url or os.getenv("MAPBOX_BASE_URL", DEFAULT_MAPBOX_BASE_URL)
+        self.token = token or settings.mapbox_access_token
+        self.base_url = base_url or settings.mapbox_base_url
 
         if not self.token:
             raise Exception("MAPBOX_ACCESS_TOKEN must be set")

@@ -1,7 +1,7 @@
 """Gemini-based similarity using Google's Generative AI."""
 
 import os
-from similarity.base import BaseSimilarity
+from ..base import BaseSimilarity
 
 
 DEFAULT_GEMINI_MODEL = "gemini-2.5-flash"
@@ -33,7 +33,7 @@ class GeminiSimilarity(BaseSimilarity):
             if api_key:
                 self._client = genai.Client(api_key=api_key)
                 self._model_name = os.getenv("GEMINI_MODEL", DEFAULT_GEMINI_MODEL)
-                self._available = True
+                self._available = False # for not running in benchmark
                 print(f"Gemini initialized with model: {self._model_name}")
             else:
                 print("Gemini: GEMINI_API_KEY not found in environment")

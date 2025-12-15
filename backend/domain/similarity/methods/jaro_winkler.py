@@ -1,6 +1,6 @@
 """Jaro-Winkler similarity algorithm."""
 
-from similarity.base import BaseSimilarity
+from ..base import BaseSimilarity
 
 
 class JaroWinklerSimilarity(BaseSimilarity):
