@@ -28,6 +28,10 @@ class Settings(BaseSettings):
     default_page_size: int = 5
     max_page_size: int = 100
 
+    # Cache
+    redis_url: str | None = None
+    cache_ttl: int = 300  # 5 minutes
+
 
 @lru_cache
 def get_settings() -> Settings:
