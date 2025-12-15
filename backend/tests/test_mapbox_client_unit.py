@@ -1,6 +1,7 @@
 """Unit tests for Mapbox Geocoding API client with mocked responses."""
 
 import pytest
+import requests
 
 
 class TestMapboxClientUnit:
@@ -8,10 +9,8 @@ class TestMapboxClientUnit:
 
     def test_geocode_api_error_handling(self, mapbox_client, mocker):
         """Test that API errors are handled gracefully."""
-        import requests
-
         mocker.patch(
-            "requests.get",
+            "infrastructure.clients.mapbox.client.requests.get",
             side_effect=requests.RequestException("Network error"),
         )
 
@@ -23,7 +22,7 @@ class TestMapboxClientUnit:
         mock_response = mocker.Mock()
         mock_response.json.return_value = {"features": []}
         mock_response.raise_for_status = mocker.Mock()
-        mocker.patch("requests.get", return_value=mock_response)
+        mocker.patch("infrastructure.clients.mapbox.client.requests.get", return_value=mock_response)
 
         result = mapbox_client.geocode_best_match("Nonexistent Place XYZ123")
         assert result is None
@@ -43,7 +42,7 @@ class TestMapboxClientUnit:
             ]
         }
         mock_response.raise_for_status = mocker.Mock()
-        mocker.patch("requests.get", return_value=mock_response)
+        mocker.patch("infrastructure.clients.mapbox.client.requests.get", return_value=mock_response)
 
         result = mapbox_client.geocode_best_match("Test Address")
         assert result == "123 Test Street, Test City, Country"
@@ -62,7 +61,7 @@ class TestMapboxClientUnit:
             ]
         }
         mock_response.raise_for_status = mocker.Mock()
-        mocker.patch("requests.get", return_value=mock_response)
+        mocker.patch("infrastructure.clients.mapbox.client.requests.get", return_value=mock_response)
 
         result = mapbox_client.geocode_best_match("Test Address")
         assert result == "Test Location, Test City, Country"

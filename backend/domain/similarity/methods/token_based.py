@@ -3,7 +3,7 @@
 import re
 from typing import Set
 
-from similarity.base import BaseSimilarity
+from ..base import BaseSimilarity
 
 
 class TokenBasedSimilarity(BaseSimilarity):

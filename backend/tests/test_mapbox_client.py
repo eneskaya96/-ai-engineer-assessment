@@ -1,6 +1,6 @@
 """Tests for Mapbox Geocoding API client."""
 
-import pytest
+from config import settings
 
 
 class TestMapboxClient:
@@ -8,10 +8,8 @@ class TestMapboxClient:
 
     def test_client_initialization(self, mapbox_client):
         """Test that client initializes with token."""
-        from mapbox_client import DEFAULT_MAPBOX_BASE_URL
-
         assert mapbox_client.token is not None
-        assert mapbox_client.base_url == DEFAULT_MAPBOX_BASE_URL
+        assert mapbox_client.base_url == settings.mapbox_base_url
 
     def test_geocode_empty_query(self, mapbox_client):
         """Test that empty queries return None."""

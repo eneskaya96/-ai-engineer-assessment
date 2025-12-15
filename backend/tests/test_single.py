@@ -8,7 +8,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from dotenv import load_dotenv
 load_dotenv()
 
-from similarity import SimilarityMethod, get_similarity_method
+from domain.similarity import SimilarityMethod, get_similarity_method
 
 
 # ============ CONFIGURE HERE ============

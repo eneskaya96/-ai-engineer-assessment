@@ -1,6 +1,6 @@
 """Levenshtein distance based similarity."""
 
-from similarity.base import BaseSimilarity
+from ..base import BaseSimilarity
 
 
 class LevenshteinSimilarity(BaseSimilarity):

@@ -21,7 +21,7 @@ const App: React.FC = () => {
 
   const queryClient = useQueryClient();
 
-  const addresses = data || [];
+  const addresses = data?.items || [];
 
   const handleToggleSelect = (id: number) => {
     setSelectedIds((prev) =>

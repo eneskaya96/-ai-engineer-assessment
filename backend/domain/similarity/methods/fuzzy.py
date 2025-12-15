@@ -1,6 +1,6 @@
 """Fuzzy similarity using rapidfuzz library."""
 
-from similarity.base import BaseSimilarity
+from ..base import BaseSimilarity
 
 
 class FuzzySimilarity(BaseSimilarity):

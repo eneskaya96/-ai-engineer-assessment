@@ -2,9 +2,9 @@
 
 from typing import Dict, Type
 
-from similarity.base import BaseSimilarity
-from similarity.enums import SimilarityMethod
-from similarity.methods import (
+from .base import BaseSimilarity
+from .enums import SimilarityMethod
+from .methods import (
     BaselineSimilarity,
     LevenshteinSimilarity,
     JaroWinklerSimilarity,

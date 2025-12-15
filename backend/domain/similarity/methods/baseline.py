@@ -2,7 +2,7 @@
 
 import difflib
 
-from similarity.base import BaseSimilarity
+from ..base import BaseSimilarity
 
 
 class BaselineSimilarity(BaseSimilarity):
